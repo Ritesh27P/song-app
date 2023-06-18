@@ -1,3 +1,5 @@
+// const axios = require('axios');
+import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -9,28 +11,33 @@ const initialState = {
   genreListId: '',
 };
 
+
 const playerSlice = createSlice({
   name: 'player',
   initialState,
   reducers: {
     setActiveSong: (state, action) => {
       state.activeSong = action.payload.song;
-
-      if (action.payload?.data?.tracks?.hits) {
-        state.currentSongs = action.payload.data.tracks.hits;
-      } else if (action.payload?.data?.properties) {
-        state.currentSongs = action.payload?.data?.tracks;
-      } else {
-        state.currentSongs = action.payload.data;
-      }
-
-      state.currentIndex = action.payload.i;
+      if (action.payload.track) state.currentSongs = (action.payload.track)
+      state.currentIndex = 0;
       state.isActive = true;
     },
 
     nextSong: (state, action) => {
-      if (state.currentSongs[action.payload]?.track) {
-        state.activeSong = state.currentSongs[action.payload]?.track;
+      if (!state.currentSongs[action.payload]?.preview_url) {
+        state.currentSongs = state.currentSongs.filter((_, i) => i !== action.payload)
+      }
+      if (state.currentSongs[action.payload]) {
+        state.activeSong = {
+          preview: state.currentSongs[action.payload]?.preview_url,
+          title: state.currentSongs[action.payload]?.name,
+          artist: {
+            name: state.currentSongs[action.payload]?.artists[0]?.name
+          },
+          album: {
+            cover: state.currentSongs[action.payload]?.album?.images[0]?.url
+          }
+        };
       } else {
         state.activeSong = state.currentSongs[action.payload];
       }
@@ -40,8 +47,17 @@ const playerSlice = createSlice({
     },
 
     prevSong: (state, action) => {
-      if (state.currentSongs[action.payload]?.track) {
-        state.activeSong = state.currentSongs[action.payload]?.track;
+      if (state.currentSongs[action.payload]) {
+        state.activeSong = {
+          preview: state.currentSongs[action.payload]?.preview_url,
+          title: state.currentSongs[action.payload]?.name,
+          artist: {
+            name: state.currentSongs[action.payload]?.artists[0]?.name
+          },
+          album: {
+            cover: state.currentSongs[action.payload]?.album?.images[0]?.url
+          }
+        };
       } else {
         state.activeSong = state.currentSongs[action.payload];
       }
@@ -63,3 +79,5 @@ const playerSlice = createSlice({
 export const { setActiveSong, nextSong, prevSong, playPause, selectGenreListId } = playerSlice.actions;
 
 export default playerSlice.reducer;
+
+
