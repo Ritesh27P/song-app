@@ -1,35 +1,43 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import { genres } from "../assets/constants";
-import { SongCard, Error, Loader, SongBar} from "../components";
-import { useTopChartQuery } from "../redux/store";
+import { SongCard} from "../components";
 import { useDispatch, useSelector } from "react-redux";
+import getGenreSongs from "../services/getGenreSongs";
+
 
 const Discover = () => {
     const dispatch = useDispatch();
+    const [songs, setSongs] = useState(data)
+    const [Genre, setGenre] = useState('')
     const { activeSong, isPlaying} = useSelector(state => state.player)
     const genreTitle = 'Pop';
 
-
+    // getGenreSongs('pop');
+    const handleChangeGenre = async e => {
+        setGenre(e.target.value)
+        const track = await getGenreSongs('pop')
+        setSongs(track)
+    }
     return (
         <div className="flex flex-col">
             <div className="flex justify-between items-center w-full sm:flex-row flex-col mt-4 mb-10">
-                <h2 className="font-bold text-white text-left text-3xl">Discover {genreTitle}</h2>
+                <h2 className="font-bold text-white text-left text-3xl">Discover {Genre}</h2>
                 <select
+                    onChange={e=> handleChangeGenre(e)} 
                     className="bg-[#A68DAD] text-gray-300 p-3 text-sm rounded-lg outline-none sm:mt-0 mt-5"
                 >
-                    {genres.map( genre => <option key={genre.value} value={genre.value} >{genre.title}</option>)}
+                    {genres.map( genre => <option key={genre.value} value={genre.title} >{genre.title}</option>)}
                 </select>
             </div>
 
             <div className="flex flex-wrap sm:justify-start justify-center gap-8">
-                {data?.chart?.entries?.map( (song, i) => <SongCard isPlaying={isPlaying} activeSong={activeSong} key={i} title={song?.title} artist={song?.artist} cover={song?.cover} i={i} />)}
+                {songs?.chart?.entries?.map( (song, i) => <SongCard isPlaying={isPlaying} activeSong={activeSong} key={i} title={song?.title} artist={song?.artist} cover={song?.cover} i={i} />)}
             </div>
         </div>
     );
 }
 
 export default Discover;
-
 
 const data = {
     chart: {
