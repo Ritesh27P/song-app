@@ -14,7 +14,7 @@ const TopArtists = () => {
         )
     })
     return (
-        <div className="flex flex-wrap sm:justify-start justify-center gap-8">
+        <div className="h-screen overflow-y-auto flex flex-row flex-wrap justify-center gap-8 flex-grow smooth-transition hide-scrollbar">
             {renderArtists}
         </div>
     )

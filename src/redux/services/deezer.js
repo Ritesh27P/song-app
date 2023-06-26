@@ -48,10 +48,21 @@ const artistDetail = createApi({
     endpoints: (builder) => ({
         artistDetail: builder.query({
             query: (artist_name) => {
-                console.log(artist_name)
                 return {
                     url: '',
                     params: {q: artist_name},
+                    headers: {
+                        'X-RapidAPI-Key': '21a8342662msh9fac29e21126d9fp193e6ajsnbd708c8a2510',
+                        'X-RapidAPI-Host': 'deezerdevs-deezer.p.rapidapi.com'
+                    }
+                }
+            }
+        }),
+        searchQuery: builder.query({
+            query: (search) => {
+                return {
+                    url: "",
+                    params: {q: search},
                     headers: {
                         'X-RapidAPI-Key': '21a8342662msh9fac29e21126d9fp193e6ajsnbd708c8a2510',
                         'X-RapidAPI-Host': 'deezerdevs-deezer.p.rapidapi.com'
@@ -64,6 +75,6 @@ const artistDetail = createApi({
 
 export const { useTopChartQuery } = musicApi;
 export const { useTopArtistsQuery } = artistsApi;
-export const { useArtistDetailQuery } = artistDetail;
+export const { useArtistDetailQuery, useSearchQueryQuery } = artistDetail;
 export {musicApi, artistsApi, artistDetail}
 

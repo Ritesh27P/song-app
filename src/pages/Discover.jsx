@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { genres } from "../assets/constants";
 import { SongCard} from "../components";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,21 @@ const Discover = () => {
     const [songs, setSongs] = useState(data)
     const [Genre, setGenre] = useState('')
     const { activeSong, isPlaying} = useSelector(state => state.player)
-    const genreTitle = 'Pop';
+    
+    useEffect(() => {
+      window.scrollTo({
+        top: 0,
+        bottom: 0,
+        behavior: 'smooth',
+    });
+    }, [])
+
+    const scrollTop = () => {
+      document.getElementById('songList').scrollTo(0,0)
+
+      console.log(document.getElementById('songs'));
+
+    }
 
     // getGenreSongs('pop');
     const handleChangeGenre = async e => {
@@ -20,8 +34,8 @@ const Discover = () => {
     }
     return (
         <div className="flex flex-col">
-            <div className="flex justify-between items-center w-full sm:flex-row flex-col mt-4 mb-10">
-                <h2 className="font-bold text-white text-left text-3xl">Discover {Genre}</h2>
+            <div className="flex justify-between items-center w-full sm:flex-row flex-col mt-4 mb-6">
+                <h2 className="font-bold text-white text-left text-3xl" id="songs">Discover {Genre}</h2>
                 <select
                     onChange={e=> handleChangeGenre(e)} 
                     className="bg-[#A68DAD] text-gray-300 p-3 text-sm rounded-lg outline-none sm:mt-0 mt-5"
@@ -30,9 +44,14 @@ const Discover = () => {
                 </select>
             </div>
 
-            <div className="flex flex-wrap sm:justify-start justify-center gap-8">
+            <div 
+                // className="flex flex-wrap justify-center gap-8"
+                className="h-screen overflow-y-auto flex flex-row flex-wrap justify-center gap-8 flex-grow smooth-transition hide-scrollbar"
+                id="songList"
+                >
                 {songs?.chart?.entries?.map( (song, i) => <SongCard isPlaying={isPlaying} activeSong={activeSong} key={i} title={song?.title} artist={song?.artist} cover={song?.cover} i={i} />)}
             </div>
+            {/* <button className="mt-8 font-bold text-white" onClick={scrollTop}><a href="#songs">Top</a></button> */}
         </div>
     );
 }

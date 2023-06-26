@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { musicApi, useTopChartQuery, artistsApi, useTopArtistsQuery, artistDetail, useArtistDetailQuery } from './services/deezer';
+import { musicApi, useTopChartQuery, artistsApi, useTopArtistsQuery, artistDetail, useArtistDetailQuery, useSearchQueryQuery } from './services/deezer';
 import playerReducer from './features/playerSlice';
 import { songApi, useFetchSongQuery } from './services/song';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
@@ -18,4 +18,4 @@ export const store = configureStore({
 setupListeners(store.dispatch)
 
 export const { setActiveSong, nextSong, prevSong, playPause, selectGenreListId } = playerReducer
-export { useTopChartQuery, useFetchSongQuery, useTopArtistsQuery, useArtistDetailQuery }
+export { useTopChartQuery, useFetchSongQuery, useTopArtistsQuery, useArtistDetailQuery, useSearchQueryQuery }

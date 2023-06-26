@@ -29,10 +29,11 @@ const ArtistDetails = () => {
 			</div>
 		 )
 	})
-	console.log(filterSongs);
 	return (
-		<div className="flex flex-wrap sm:justify-start justify-center gap-8">
-			{renderSongs}
+		<div>
+			<div className="flex flex-wrap sm:justify-start justify-center gap-8">
+				{renderSongs}
+			</div>
 		</div>
 	)
 }
